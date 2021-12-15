@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" 
+    integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ=="
+     crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet"> 
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Dancing Script', sans-serif;
+            
+        }
+        body{
+            background-color: rgb(53, 111, 220,0.1);
+
+        }
+        .container{
+            margin :auto;
+            top:5rem;
+            height: 500px;
+            width: 500px;
+            position: relative;
+            justify-content: center;
+            padding: 40x;
+          }
+       .box ,.inner{
+            
+position: absolute;
+ 
+ width: 400px;
+ height:400px;
+ margin: 10px;
+ background-color: #fff;
+  }
+         .inner{
+           margin: 9% 10%;
+           box-shadow: 7px 5px 2px rgb(170, 169, 169,0.4);
+         }
+         .box{
+             position: relative;
+            width: 95%;
+            height:200px;
+   }
+        
+        .box-content{
+            display: flex;
+            flex-direction: column;
+         }
+         
+        .box-content p{
+            float: right;
+            
+        }
+        #tweetme{
+            float: right;
+       height: 50px;
+       width: 50px;
+       cursor: pointer;
+
+        }
+        .quote{
+            display: block;
+            height: 275px;
+            color: rgb(0, 0, 0);
+            margin-top: 10px;
+            padding: 10px;
+        }
+        #quotes{
+            margin-top: 50px;
+             text-align:start;
+            font-size: 25px;
+            font-weight: 500;
+            position: relative;
+        height: 60px;
+        }
+        #author{
+            margin-bottom: 15rem;
+            height: 60px;
+            float: right;
+            margin-top: 80px;
+            font-size: 20px;
+            font-weight: 500;
+           
+        }
+        #author::before{
+content: "BY - ";
+
+        }
+        .button{
+          display: flex;
+          justify-content: center;
+           padding: 10px;
+          background-color: rgb(146, 123, 123 ,0.7);
+  
+           height: 50px;
+           cursor: pointer;
+        }
+        #newQ {
+            padding:  2px;
+            font-size: 30px;
+            font-weight: 800;
+            color:rgb(255, 248, 248);
+            animation-name: example;
+  animation-duration: 3s;  
+  animation-delay: 2s;
+  animation-fill-mode: backwards;
+        };
+        @keyframes example {
+  from {top: 0px; background-color: yellow;}
+  to {top: 200px;}
+}
+@media screen and (max-width:600px) {
+    .container{
+            margin-left: -5px;
+            width: 50px;
+             height: 90rem;
+            justify-content: center;
+          
+          }
+          
+
+}
+         
+    </style>
+</head>
+
+<body> 
+<div class="container">
+    <div class="inner">
+        <div class="box">
+            <div class="box-content">
+                <p class=" grid-item1"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXQ7qyf_ig1HCTjyr_QOoBH_Ce0N-phwWiLAwSv-nXsXJf8Q-Yeg6G4E_tPfjDl6Hunnk&usqp=CAU" title=" tweet" alt="tweet" id="tweetme"></p>
+             
+                <div class="quote grid-item2">
+                    <i class="start-quote fas fa-quote-left " style="color: rgb(146, 123, 123 ,0.7);font-size: 30px; "></i>
+                    <div id="quotes"></div>
+                    <div id="author"></div>
+                </div>
+                <label class="button grid-item3" id="newQ">
+                    <p id="newQ">New Quotes</p>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        let quotes = document.getElementById('quotes');
+        let author = document.getElementById('author');
+        let newQ = document.getElementById('newQ');
+        let tweetme = document.getElementById('tweetme');
+        let realData="";
+        let randQuote="";
+        //get random quote
+        const randomQuote = () => {
+            let randomNo =Math.floor( Math.random() * 20);
+              randQuote = realData[randomNo];
+            quotes.innerHTML = randQuote.text;
+            randQuote.author === null?  author.innerHTML ="unknown" :author.innerHTML = randQuote.author;
+        
+        }
+
+        //get realtime data with async function
+        const getQuotes = async () => {
+            const api = "https://type.fit/api/quotes";
+            try {
+                //fetch the data
+                let data = await fetch(api);
+                //convert to json format
+                realData = await data.json();
+                randomQuote()
+              } catch (error) { }
+        };
+        //post qoute on tweet ;
+
+        getQuotes();
+        //get random quote on click;
+        newQ.addEventListener('click', randomQuote)
+        //add eventlistener to tweetme to  post quote on tweet;
+        tweetme.addEventListener('click',()=>{
+            //get tweet url
+            const tweeturl = `https://twitter.com/intent/tweet?text=${randQuote.text}`;
+            window.open(tweeturl)
+            console.log(tweeturl)
+        })
+        </script>
+</body>
+
+</html>
